@@ -9,6 +9,7 @@ import FBLoginButton from '../components/FBLoginButton'
 import TextTranslation from '../components/TextTranslation'
 import Button from '../components/Button'
 import {Titles, DefaultImg} from '../constants/Constants'
+import GoogleLoginButton from '../components/GoogleLoginButton'
 
    WelcomeScreen = (props) => {
         const [image, setImage] = useState(DefaultImg.URI)
@@ -36,8 +37,9 @@ import {Titles, DefaultImg} from '../constants/Constants'
                 <Image style={styles.userImage} source={{uri: image }}/>
                 {!movieListPermission && <Text style={styles.addtionText}>{Titles.PleaseLogin}</Text>}
             </View>
-            <View style={styles.fbLoginBtn}>
+            <View style={styles.loginButtons}>
                 <FBLoginButton changeNameAndPhoto={(name, image)=>changeNameAndPhoto(name,image)} />
+                <GoogleLoginButton/>
                 {movieListPermission && <Button onPress={()=> navigateTo('MovieList')} title={Titles.MovieList}/>}
             </View>
         </View> 
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     addtionText: {
         fontSize: 16,
     },
-    fbLoginBtn:{
+    loginButtons:{
         flex:1,
         alignItems:'center',
         justifyContent:'center',

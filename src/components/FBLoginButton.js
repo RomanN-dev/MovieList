@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { LoginButton, AccessToken } from 'react-native-fbsdk';
 import axios from 'axios'
+import {FaceBook} from '../constants/Constants'
 
-export default class FBLoginButton extends Component {
+const FBLoginButton = (props) => {
 
-    async getFbDate(accessToken) {
-        const response = await axios.get(`https://graph.facebook.com/me?access_token=${accessToken}&fields=email,name,picture.type(large)`);
-        this.props.changeNameAndPhoto(response.data.name, response.data.picture.data.url)
-    }
+  getFbDate = async (accessToken) => {
+    const EndPoint = `${FaceBook.Url}${accessToken}${FaceBook.infoToGet}`
+    const response = await axios.get(EndPoint);
+    props.changeNameAndPhoto(response.data.name, response.data.picture.data.url)
+  }
 
-  render() {
-      
-    return (
-      <View>
+  return(
+    <View>
         <LoginButton
           publishPermissions={["email"]}
           onLoginFinished={
@@ -23,14 +23,15 @@ export default class FBLoginButton extends Component {
               } else if (result.isCancelled) {
                 alert("Login was cancelled");
               } else {
-                AccessToken.getCurrentAccessToken().then((accessToken) => this.getFbDate(accessToken.accessToken))
+                AccessToken.getCurrentAccessToken()
+                  .then((accessToken) => getFbDate(accessToken.accessToken))
               }
             }
           }
-          onLogoutFinished={() => this.props.changeNameAndPhoto()}/>
+          onLogoutFinished={() => props.changeNameAndPhoto()}/>
       </View>
-    );
-  }
-};
+  )
+}
 
-module.exports = FBLoginButton;
+export default FBLoginButton
+
