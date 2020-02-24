@@ -6,15 +6,13 @@ import {
   Image,
 } from 'react-native';
 import FBLoginButton from '../components/FBLoginButton'
+import TextTranslation from '../components/TextTranslation'
 import Button from '../components/Button'
-
-const imageUri = "http://cdn.onlinewebfonts.com/svg/img_568656.png"
-const buttonTitle = "movies list"
-const addtionalText = "Please Log in to Continue to the awsomneses"
+import {Titles, DefaultImg} from '../constants/Constants'
 
    WelcomeScreen = (props) => {
-        const [image, setImage] = useState(imageUri)
-        const [name, setName] = useState('Stranger')
+        const [image, setImage] = useState(DefaultImg.URI)
+        const [name, setName] = useState(Titles.Stranger)
         const [movieListPermission, setMovieListPermission] = useState(false)
 
         changeNameAndPhoto = (name, image) => {
@@ -23,31 +21,38 @@ const addtionalText = "Please Log in to Continue to the awsomneses"
                 setName(name)
                 setMovieListPermission(true) 
             } else {
-                setImage(imageUri)
-                setName('Stranger')
+                setImage(DefaultImg.URI)
+                setName(Titles.Stranger)
                 setMovieListPermission(false) 
             }   
         }
         navigateTo = (destenation)=> {
             props.navigation.navigate(destenation)
         }
-
-        return(
-            <View style={styles.container}>
-                <View style={styles.mainContainer}>
-                    <Text style={styles.welcomeText}>Welcome {name}!</Text>
-                    <Image style={styles.userImage} source={{uri: image }}/>
-                    <Text style={styles.addtionText}>{addtionalText}</Text>
-                </View>
-                <View style={styles.fbLoginBtn}>
-                    <FBLoginButton changeNameAndPhoto={(name, image)=>changeNameAndPhoto(name,image)} />
-                    {movieListPermission && <Button navigateTo={()=> navigateTo('MovieList')} title={buttonTitle}/>}
-                </View>
+    return(  
+        <View style={styles.container}>
+            <View style={styles.mainContainer}>
+                <TextTranslation text={Titles.Welcome} subText={name}/>
+                <Image style={styles.userImage} source={{uri: image }}/>
+                {!movieListPermission && <Text style={styles.addtionText}>{Titles.PleaseLogin}</Text>}
             </View>
+            <View style={styles.fbLoginBtn}>
+                <FBLoginButton changeNameAndPhoto={(name, image)=>changeNameAndPhoto(name,image)} />
+                {movieListPermission && <Button onPress={()=> navigateTo('MovieList')} title={Titles.MovieList}/>}
+            </View>
+        </View> 
         )
     }
 
-    export default WelcomeScreen
+WelcomeScreen.navigationOptions = {
+    title: Titles.Welcome,
+    headerTintColor: 'white',
+    headerStyle: {
+        backgroundColor: 'white'
+              },
+    }
+
+export default WelcomeScreen
 
 
 const styles = StyleSheet.create({
@@ -56,6 +61,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     mainContainer: {
+        padding:100,
         flex:1,
         justifyContent: 'center',
         alignItems: 'center'
@@ -67,6 +73,7 @@ const styles = StyleSheet.create({
         margin:30,
         width:200, 
         height:200,
+        borderRadius: 100,
         resizeMode:'contain'
     },
     addtionText: {

@@ -1,76 +1,66 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { 
   StyleSheet,
   Text,
   View,
   Image,
-  TouchableOpacity
 } from 'react-native';
-import movieApi from '../logic/movieApi'
-import { ScrollView } from 'react-native-gesture-handler';
+import Button from '../components/Button'
+import TextTranslation from '../components/TextTranslation'
+import {Context} from '../store/Store'
+import Store from '../store/Store'
+import {Titles, TMDB} from '../constants/Constants'
 
-const imageUrl = "https://image.tmdb.org/t/p/w185_and_h278_bestv2"
+const MovieInfoScreen = (props)=> {
+    const [item, setItem] = useState(undefined)
+    const [state, dispatch] = useContext(Context);
+    const [movies, setMovies] = useState([""])
 
+    useEffect(()=> {
+        setItem(props.navigation.getParam('item', 'NO-ID'))
+    },[])
 
-export default class MovieInfoScreen extends Component {
-    
-    state={
-        item: this.props.navigation.getParam('item', 'NO-ID'),
-    }
-    
-    static navigationOptions = () => {
-        return {
-            title: 'MovieInfo',
-            headerTintColor: 'black',
-            headerStyle: {
-                backgroundColor: 'white'
-              },
-        }
-    }
-
-    render() {
-        
-        const {item} = this.state
-        return(
+    return(
+        <Store>
             <View style={styles.container}>
                 {item &&  
-                <TouchableOpacity style={{justifyContent:'center', alignItems:'center', borderWidth:2}} >
-                    <Text style={{fontSize:22}}>Name: {item.title}</Text>
-                    <Image style={{width:185, height:278}} source={{uri: `${imageUrl}${item.poster_path}`}}/>
-                    <Text>Popularity: {item.popularity}</Text>
-                    <Text>Description: {item.overview}</Text>
-                </TouchableOpacity>}  
+                <View style={styles.mainContainer} >
+                    <TextTranslation text={Titles.Name} subText={item.title}/>
+                    <Image style={styles.posterStyle} source={{uri: `${TMDB.imageUrl}${item.poster_path}`}}/>
+                    <TextTranslation text={Titles.Popularity} subText={item.popularity}/>
+                    <TextTranslation text={Titles.Description} subText={item.overview}/>
+                    <Button onPress={()=> setMovies(item.title) } title={Titles.AddToCart}/>
+                    <Text>{movies}</Text>
+                </View>}  
             </View>
-        )
-    }
+        </Store>
+    )
 }
+
+MovieInfoScreen.navigationOptions = {
+    
+    title: 'MovieInfo',
+    headerTintColor: 'black',
+    headerStyle: {
+        backgroundColor: 'white'
+        },
+}
+
+export default MovieInfoScreen
 
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        justifyContent:'center'
     },
     mainContainer: {
-        flex:1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent:'center', 
+        alignItems:'center',
     },
-    welcomeText: {
-        fontSize: 22,
-    },
-    userImage: {
-        margin:30,
-        width:200, 
-        height:200,
-        resizeMode:'contain'
-    },
-    addtionText: {
-        fontSize: 16,
-    },
-    fbLoginBtn:{
-        flex:1,
-        flexDirection:'row',
-        alignItems:'flex-end'
+    posterStyle: {
+        width:185, 
+        height:278
     }
-    
+     
 })
