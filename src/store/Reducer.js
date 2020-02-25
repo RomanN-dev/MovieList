@@ -3,12 +3,12 @@ const Reducer = (state, action) => {
         case 'ADD_MOVIE':
             return {
                 ...state,
-                movie: action.payload,
+                ...{movie: action.payload}
             };
         case 'REMOVE_MOVIE':
             return {
                 ...state,
-                movie: action.payload,
+                movie: state.movie.slice(action.payload),
             };
         default:
             return state;

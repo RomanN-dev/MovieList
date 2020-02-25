@@ -41,6 +41,7 @@ import GoogleLoginButton from '../components/GoogleLoginButton'
                 <FBLoginButton changeNameAndPhoto={(name, image)=>changeNameAndPhoto(name,image)} />
                 <GoogleLoginButton/>
                 {movieListPermission && <Button onPress={()=> navigateTo('MovieList')} title={Titles.MovieList}/>}
+                <Button onPress={()=> navigateTo('MovieList')} title={"Skip Login"}/>
             </View>
         </View> 
         )

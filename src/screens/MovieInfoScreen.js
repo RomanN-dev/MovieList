@@ -14,14 +14,20 @@ import {Titles, TMDB} from '../constants/Constants'
 const MovieInfoScreen = (props)=> {
     const [item, setItem] = useState(undefined)
     const [state, dispatch] = useContext(Context);
-    const [movies, setMovies] = useState([""])
 
     useEffect(()=> {
         setItem(props.navigation.getParam('item', 'NO-ID'))
     },[])
 
+   function addToCart(item) { 
+      dispatch({type:"ADD_MOVIE", payload: [state.movie, item]})
+    }
+
+    function removeFromCart(item) {
+      dispatch({type:"REMOVE_MOVIE", payload: item})
+    }
+
     return(
-        <Store>
             <View style={styles.container}>
                 {item &&  
                 <View style={styles.mainContainer} >
@@ -29,11 +35,17 @@ const MovieInfoScreen = (props)=> {
                     <Image style={styles.posterStyle} source={{uri: `${TMDB.imageUrl}${item.poster_path}`}}/>
                     <TextTranslation text={Titles.Popularity} subText={item.popularity}/>
                     <TextTranslation text={Titles.Description} subText={item.overview}/>
-                    <Button onPress={()=> setMovies(item.title) } title={Titles.AddToCart}/>
-                    <Text>{movies}</Text>
+                    <Button onPress={ ()=> addToCart(item.title)} title={Titles.AddToCart}/>
+                    <Button onPress={ ()=> removeFromCart(item.title)} title={Titles.Remove}/>
+                    <View style={{flexDirection:'column'}}>
+                        {state.movie.map((value, key)=>(
+                            <Text key={key}>{value}</Text>
+                        ))}
+                    </View>
+                    
                 </View>}  
             </View>
-        </Store>
+            
     )
 }
 

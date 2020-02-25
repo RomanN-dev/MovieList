@@ -10,6 +10,7 @@ export const Titles = {
     Popularity: "Popularity",
     Description: "Description",
     AddToCart: "Add to cart",
+    Remove: "Remove from cart",
     Stranger: "Stranger",
     MovieList: "Movies list",
     PleaseLogin: "Please Log in to Continue to the awsomneses"

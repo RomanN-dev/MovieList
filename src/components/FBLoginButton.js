@@ -19,7 +19,7 @@ const FBLoginButton = (props) => {
           onLoginFinished={
             (error, result) => {
               if (error) {
-                alert("Login failed with error: " + error.message);
+                alert("Login failed with error: " + error);
               } else if (result.isCancelled) {
                 alert("Login was cancelled");
               } else {

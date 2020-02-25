@@ -43,8 +43,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    // FacebookSdk.setApplicationId("385460408705599");
-    // FacebookSdk.sdkInitialize(this);
+    FacebookSdk.setApplicationId("385460408705599");
+    FacebookSdk.sdkInitialize(this);
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
   }
